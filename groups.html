@@ -116,8 +116,14 @@ code, .code { font-family: ui-monospace, "Consolas", "Menlo", monospace; font-va
 .card .en { display: block; margin-top: 2px; font-size: .9rem; color: var(--muted); overflow-wrap: anywhere; }
 .card .meta { display: block; margin-top: var(--s2); font-size: .9rem; color: var(--muted); }
 .card .hits { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s1); margin-top: var(--s2); font-size: 14px; }
-.card .badges { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s3); }
-.card .open-hint { display: block; margin-top: var(--s3); color: var(--teal-dark); font-size: 13px; font-weight: 600; }
+.card .badges { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: 0; justify-content: flex-end; }
+.card .card-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.card .card-top .badges { flex: 0 1 auto; }
+.card .code-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+.card .code-total { color: var(--ink); font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--gray-soft); }
+.card .sys-count { color: var(--muted); padding: 4px 10px; border-radius: 999px; background: #f8fafc; border: 1px solid var(--line-soft); font-size: 13px; }
+.card .sys-count.icd10 { color: var(--teal-dark); background: #f0fdfa; border-color: #ccfbf1; }
+.card .open-hint { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 11px; border-top: 1px solid var(--line-soft); color: var(--teal-dark); font-size: 13px; font-weight: 700; }
 .card:focus-visible { outline: 3px solid #5eead4; outline-offset: 2px; }
 .code-details { display: grid; gap: 10px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
 .code-group { display: block; }
@@ -403,13 +409,19 @@ body.lock { overflow: hidden; }
     const shown = hits.slice(0, 6).map((c) => el('code', { class: 'hit' }, c.dotted));
     if (hits.length > 6) shown.push(el('span', { class: 'meta' }, `+${hits.length - 6}`));
     return el('button', { class: 'card', type: 'button', 'data-key': gkey(g), 'aria-haspopup': 'dialog', onclick: (e) => openModal(g, e.currentTarget) },
-      el('span', { class: 'no' }, `${g.section} ${g.no}`),
+      el('div', { class: 'card-top' },
+        el('span', { class: 'no' }, `${g.section} ${g.no}`),
+        badges.length ? el('span', { class: 'badges' }, badges) : null),
       el('span', { class: 'name' }, g.name_th),
       el('span', { class: 'en' }, g.name_en),
-      el('span', { class: 'meta' }, countTxt),
+      g.n_codes
+        ? el('span', { class: 'code-stats' },
+            el('span', { class: 'code-total' }, `${g.n_codes} รหัส`),
+            el('span', { class: 'sys-count icd10' }, `ICD-10 ${g.n_icd10}`),
+            el('span', { class: 'sys-count icd9' }, `ICD-9 ${g.n_icd9}`))
+        : el('span', { class: 'meta' }, countTxt),
       hits.length ? el('span', { class: 'hits' }, 'พบรหัส:', shown) : null,
-      badges.length ? el('span', { class: 'badges' }, badges) : null,
-      el('span', { class: 'open-hint' }, 'แตะเพื่อดูรหัสและรายละเอียด ›'));
+      el('span', { class: 'open-hint' }, el('span', {}, 'แตะเพื่อดูรหัสและรายละเอียด'), el('span', { 'aria-hidden': 'true' }, '›')));
   }
 
   function renderList() {
