@@ -412,8 +412,8 @@ body.lock { overflow: hidden; }
       el('div', { class: 'card-top' },
         el('span', { class: 'no' }, `${g.section} ${g.no}`),
         badges.length ? el('span', { class: 'badges' }, badges) : null),
-      el('span', { class: 'name' }, g.name_th),
-      el('span', { class: 'en' }, g.name_en),
+      el('span', { class: 'name' }, g.name_en),
+      el('span', { class: 'en' }, g.name_th),
       g.n_codes
         ? el('span', { class: 'code-stats' },
             el('span', { class: 'code-total' }, `${g.n_codes} รหัส`),
@@ -497,8 +497,8 @@ body.lock { overflow: hidden; }
       ? el('button', { class: 'btn', type: 'button', id: 'copy-btn', onclick: () => copyCodes(codes) }, `คัดลอกรหัสทั้งหมด (${g.n_codes})`)
       : null;
     body.replaceChildren(...[
-      el('h2', { id: 'm-title' }, `${g.section} ${g.no} · ${g.name_th}`),
-      el('p', { class: 'en' }, g.name_en),
+      el('h2', { id: 'm-title' }, `${g.section} ${g.no} · ${g.name_en}`),
+      el('p', { class: 'en' }, g.name_th),
       el('p', { class: 'meta' },
         g.systems === 'both' ? badge(SYS_LABEL.both, 'b-both') : badge(...SYS_BADGE[g.systems]),
         hideSourcePage ? null : (visiblePages(g.pages) ? el('span', {}, `หน้า ${visiblePages(g.pages)}`) : null),
