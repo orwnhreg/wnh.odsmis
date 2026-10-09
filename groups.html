@@ -477,6 +477,7 @@ body.lock { overflow: hidden; }
   function openModal(g, opener) {
     state.opener = opener;
     const body = $('#m-body');
+    const hideSourcePage = g.section === 'ODS' && g.no === 4;
     const codes = [...g.codes].sort((a, b) =>
       (a.system === 'icd10' ? 0 : 1) - (b.system === 'icd10' ? 0 : 1) || a.dotted.localeCompare(b.dotted, 'en'));
     const section = (system, label) => {
@@ -484,7 +485,7 @@ body.lock { overflow: hidden; }
       if (!list.length) return null;
       return el('div', {}, el('h3', {}, `${label} (${list.length})`),
         el('ul', {}, list.map((c) => {
-          const pages = visiblePages(c.page);
+          const pages = hideSourcePage ? '' : visiblePages(c.page);
           return el('li', { class: c.description_en ? 'has-name' : '' },
             el('code', {}, c.dotted),
             c.description_en ? el('span', { class: 'code-name' }, c.description_en) : null,
@@ -500,7 +501,7 @@ body.lock { overflow: hidden; }
       el('p', { class: 'en' }, g.name_en),
       el('p', { class: 'meta' },
         g.systems === 'both' ? badge(SYS_LABEL.both, 'b-both') : badge(...SYS_BADGE[g.systems]),
-        visiblePages(g.pages) ? el('span', {}, `หน้า ${visiblePages(g.pages)}`) : null,
+        hideSourcePage ? null : (visiblePages(g.pages) ? el('span', {}, `หน้า ${visiblePages(g.pages)}`) : null),
         el('span', {}, `${g.n_codes} รหัส`)),
       g.n_codes
         ? el('div', { class: 'btn-row' }, copyBtn)
