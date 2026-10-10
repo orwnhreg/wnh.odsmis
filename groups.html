@@ -176,6 +176,7 @@ code, .code { font-family: ui-monospace, "Consolas", "Menlo", monospace; font-va
 .sheet h2 { margin: 0; font-size: 18px; font-weight: 600; line-height: 1.4; padding-right: var(--touch); overflow-wrap: anywhere; }
 .sheet .en { margin: var(--s1) 0 0; font-size: 14px; color: var(--muted); overflow-wrap: anywhere; }
 .sheet .meta { margin: var(--s2) 0 0; font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: var(--s2); align-items: center; }
+.sheet .system-missing { font-size: 13px; color: var(--muted); }
 .sheet h3 { margin: var(--s5) 0 var(--s2); font-size: 14px; color: var(--muted); font-weight: 600; border-top: 1px solid var(--line); padding-top: var(--s3); }
 .sheet ul { list-style: none; margin: 0; padding: 0; }
 .sheet li { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s2) var(--s3); min-height: var(--touch); padding: var(--s1) 0; border-bottom: 1px solid var(--line); }
@@ -501,6 +502,7 @@ body.lock { overflow: hidden; }
       el('p', { class: 'en' }, g.name_th),
       el('p', { class: 'meta' },
         g.systems === 'both' ? badge(SYS_LABEL.both, 'b-both') : badge(...SYS_BADGE[g.systems]),
+        g.systems === 'icd9-only' ? el('span', { class: 'system-missing' }, 'ICD-10: –') : null,
         hideSourcePage ? null : (visiblePages(g.pages) ? el('span', {}, `หน้า ${visiblePages(g.pages)}`) : null),
         el('span', {}, `${g.n_codes} รหัส`)),
       g.n_codes
